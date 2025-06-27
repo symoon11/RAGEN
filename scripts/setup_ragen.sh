@@ -42,16 +42,16 @@ main() {
     
     # Create and activate conda environment
     # if not exists, create it
-    if ! conda env list | grep -q "UFO"; then
-        print_step "Creating conda environment 'UFO' with Python 3.12..."
-        conda create -n UFO python=3.12 -y
+    if ! conda env list | grep -q "RAGEN"; then
+        print_step "Creating conda environment 'RAGEN' with Python 3.12..."
+        conda create -n RAGEN python=3.12 -y
     else
-        print_step "Conda environment 'UFO' already exists"
+        print_step "Conda environment 'RAGEN' already exists"
     fi
     
     # Need to source conda for script environment
     eval "$(conda shell.bash hook)"
-    conda activate UFO
+    conda activate RAGEN
 
     # Install package in editable mode
     print_step "setting up verl..."
@@ -62,7 +62,7 @@ main() {
     cd ..
     
     # Install package in editable mode
-    print_step "Installing UFO package..."
+    print_step "Installing RAGEN package..."
     pip install -e .
     
     # Install PyTorch with CUDA if available
@@ -108,7 +108,7 @@ main() {
     python scripts/download_data.py
 
     echo -e "${GREEN}Installation completed successfully!${NC}"
-    echo "To activate the environment, run: conda activate UFO"
+    echo "To activate the environment, run: conda activate RAGEN"
     
     # export CMAKE_POLICY_VERSION_MINIMUM=3.5 && pip install alfworld[full]
     # alfworld-download
