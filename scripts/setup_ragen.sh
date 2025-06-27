@@ -42,32 +42,27 @@ main() {
     
     # Create and activate conda environment
     # if not exists, create it
-    if ! conda env list | grep -q "ragen"; then
-        print_step "Creating conda environment 'ragen' with Python 3.12..."
-        conda create -n ragen python=3.12 -y
+    if ! conda env list | grep -q "UFO"; then
+        print_step "Creating conda environment 'UFO' with Python 3.12..."
+        conda create -n UFO python=3.12 -y
     else
-        print_step "Conda environment 'ragen' already exists"
+        print_step "Conda environment 'UFO' already exists"
     fi
     
     # Need to source conda for script environment
     eval "$(conda shell.bash hook)"
-    conda activate ragen
-    
-    # Clone repository
-    # print_step "Cloning ragen repository..."
-    # git clone git@github.com:ZihanWang314/ragen.git
-    # cd ragen
+    conda activate UFO
 
     # Install package in editable mode
     print_step "setting up verl..."
     git submodule init
     git submodule update
     cd verl
-    pip install -e . --no-dependencies # we put dependencies in RAGEN/requirements.txt
+    pip install -e . --no-dependencies # we put dependencies in requirements.txt
     cd ..
     
     # Install package in editable mode
-    print_step "Installing ragen package..."
+    print_step "Installing UFO package..."
     pip install -e .
     
     # Install PyTorch with CUDA if available
@@ -99,7 +94,7 @@ main() {
         pip install torch==2.6.0 --index-url https://download.pytorch.org/whl/cu124
         
         print_step "Installing flash-attention..."
-        pip3 install flash-attn --no-build-isolation
+        pip3 install flash-attn==2.7.4.post1 --no-build-isolation
     else
         print_step "Installing PyTorch without CUDA support..."
         pip install torch==2.6.0
@@ -107,14 +102,13 @@ main() {
     
     # Install remaining requirements
     print_step "Installing additional requirements..."
-    pip install flashinfer-python -i https://flashinfer.ai/whl/cu126/torch2.6
     pip install -r requirements.txt
 
     print_step "Downloading data..."
     python scripts/download_data.py
 
     echo -e "${GREEN}Installation completed successfully!${NC}"
-    echo "To activate the environment, run: conda activate ragen"
+    echo "To activate the environment, run: conda activate UFO"
     
     # export CMAKE_POLICY_VERSION_MINIMUM=3.5 && pip install alfworld[full]
     # alfworld-download
