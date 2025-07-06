@@ -218,6 +218,19 @@ class EnvStateManager:
             cache['metrics'] = env_metric
             if entry['tag'] == "MetamathQA":
                 cache['correct_answer'] = entry['env'].correct_answer
+
+        # calculate pass@k where k is the group size
+        group_success = {}
+        for entry, cache in zip(envs, rollout_cache):
+            key = (entry['tag'], entry['group_id'])
+            success_val = cache['metrics'].get(f"{entry['tag']}/success", 0.0)
+            group_success.setdefault(key, []).append(success_val)
+
+        for (tag, gid), succ_list in group_success.items():
+            pass_success = float(any(succ_list))
+            for entry, cache in zip(envs, rollout_cache):
+                if entry['tag'] == tag and entry['group_id'] == gid:
+                    cache['metrics'][f"{tag}/pass@{self.group_size}"] = pass_success
         return rollout_cache
 
 
