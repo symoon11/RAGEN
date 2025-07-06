@@ -257,6 +257,7 @@ We implement RAGEN as a modular system: there are three main modules: **Environm
 
 - Environment State Manager (**es_manager**):
   - Supports multiple environments (different environments, same environment different seeds, same environment same seed)
+  - Training seeds are controlled via `seed.train` in the config. The manager increments this seed each reset so runs are deterministic.
   - Records states of each environment during rollout
   - Processes actions from **ctx_manager**, executes step, and returns action results (observations) to **ctx_manager** in a batch-wise manner
 - Context Manager (**ctx_manager**):
