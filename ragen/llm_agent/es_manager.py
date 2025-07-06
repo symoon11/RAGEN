@@ -36,6 +36,12 @@ class EnvStateManager:
         self.config = getattr(self.sys_config.es_manager, mode)
         self.env_groups = int(self.config.env_groups)
         self.group_size = self.config.group_size
+        seed_cfg = getattr(self.sys_config, "seed", None)
+        if seed_cfg is not None:
+            self.base_seed = seed_cfg.get(mode, None)
+        else:
+            self.base_seed = None
+        self.seed_counter = 0
         self._init_envs()
         self.rollout_cache = None
 
@@ -85,10 +91,18 @@ class EnvStateManager:
         rollout_cache = [{"env_id": entry['env_id'], "history": [], "group_id": entry['group_id'], "tag": entry['tag'], "penalty": 0} for entry in envs]
 
         # reset all environments
-        if self.mode == "train":
-            seed = random.randint(0, 1000000) if seed is None else seed # get a random seed
+        if seed is None:
+            if self.mode == "train":
+                if self.base_seed is not None:
+                    seed = self.base_seed + self.seed_counter
+                    self.seed_counter += 1
+                else:
+                    seed = random.randint(0, 1000000)
+            else:
+                seed = 123 if self.base_seed is None else self.base_seed
         else:
-            seed = 123
+            if self.mode == "train" and self.base_seed is not None:
+                self.seed_counter = seed - self.base_seed + 1
         seeds = _expand_seed(seed)
         for seed, entry in zip(seeds, envs):
             entry['env'].reset(seed=seed, mode=self.mode)

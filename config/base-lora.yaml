@@ -5,6 +5,10 @@ defaults:
 system:
   CUDA_VISIBLE_DEVICES: "0"
 
+seed:
+  train: 42
+  val: 123
+
 micro_batch_size_per_gpu: 4
 ppo_mini_batch_size: 32
 model_path: Qwen/Qwen2.5-0.5B-Instruct
