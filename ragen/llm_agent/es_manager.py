@@ -95,7 +95,7 @@ class EnvStateManager:
             if self.mode == "train":
                 if self.base_seed is not None:
                     seed = self.base_seed + self.seed_counter
-                    self.seed_counter += 1
+                    self.seed_counter += self.env_groups
                 else:
                     seed = random.randint(0, 1000000)
             else:
