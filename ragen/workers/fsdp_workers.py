@@ -870,7 +870,7 @@ class CriticWorker(Worker):
             if use_liger:
                 from liger_kernel.transformers.monkey_patch import _apply_liger_kernel_to_instance
 
-                _apply_liger_kernel_to_instance(model=actor_module)
+                _apply_liger_kernel_to_instance(model=critic_module)
 
             # some parameters may not in torch_dtype
             critic_module.to(torch_dtype)
