@@ -21,7 +21,6 @@ actor_rollout_ref:
 
 critic:
   model:
-    use_liger: True
     fsdp_config:
       model_dtype: bfloat16
 
