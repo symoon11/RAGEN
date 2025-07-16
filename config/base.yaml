@@ -11,7 +11,7 @@ seed:
 
 micro_batch_size_per_gpu: 1
 ppo_mini_batch_size: 32
-model_path: Qwen/Qwen2.5-0.5B-Instruct
+model_path: Qwen/Qwen3-0.6B
 enable_response_mask: True # Enabling response mask could improve stability of rollout/old_log_prob, as P(st|history) are no longer calculated in loss here. See https://docs.google.com/document/d/1bg7obeiKTExuHHBl5uOiSpec5uLDZ2Tgvxy6li5pHX4/edit?usp=sharing for more details.
 grpo_advantage_length_weight: False # if you do not enable this and critic/advantage_estimator is GRPO, and the critic/advantages/mean is too low, then you can try enabling this to encourage reasoning and forbid collapse
 
@@ -45,16 +45,16 @@ actor_rollout_ref:
   rollout:
     log_prob_micro_batch_size_per_gpu: ${micro_batch_size_per_gpu} # following micro_batch_size_per_gpu
     tensor_model_parallel_size: 1
-    max_model_len: 3600
+    max_model_len: 16384
     prompt_length: 1 # useless. Just put it here
-    response_length: 400 # single-turn response length
-    gpu_memory_utilization: 0.5
-    max_num_batched_tokens: 8192 # set only when enable_chunked_prefill is true
+    response_length: 2048 # single-turn response length
+    gpu_memory_utilization: 0.75
+    max_num_batched_tokens: 32768 # set only when enable_chunked_prefill is true
     temperature: 1
-    rollout_filter_ratio: 0.25
+    rollout_filter_ratio: 1.0
     rollout_filter_type: std # max_mean or std
-    enforce_eager: True #  for small models, set both enforce_eager and free_cache_engine to False to make rollout faster
-    free_cache_engine: True
+    enforce_eager: False #  for small models, set both enforce_eager and free_cache_engine to False to make rollout faster
+    free_cache_engine: False
     val_kwargs:
       do_sample: True
       temperature: 0.5
