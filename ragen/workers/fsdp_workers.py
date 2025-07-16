@@ -865,6 +865,13 @@ class CriticWorker(Worker):
 
                 apply_monkey_patch(model=critic_module, ulysses_sp_size=self.ulysses_sequence_parallel_size)
 
+            # Apply Liger kernel to the model if use_liger is set to True
+            use_liger = config.model.get("use_liger", False)
+            if use_liger:
+                from liger_kernel.transformers.monkey_patch import _apply_liger_kernel_to_instance
+
+                _apply_liger_kernel_to_instance(model=actor_module)
+
             # some parameters may not in torch_dtype
             critic_module.to(torch_dtype)
 
