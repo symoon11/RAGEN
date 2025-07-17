@@ -1,8 +1,8 @@
 defaults:
   - base
 
-n_gpus_per_node: 1
-CUDA_VISIBLE_DEVICES: "0"
+n_gpus_per_node: 2
+CUDA_VISIBLE_DEVICES: "0,1"
 model_path: Qwen/Qwen3-0.6B
 tokenizer_path: Qwen/Qwen2.5-0.5B-Instruct
 
@@ -26,8 +26,6 @@ actor_rollout_ref:
     response_length: 2048
     gpu_memory_utilization: 0.25
     max_num_batched_tokens: 16384
-    enforce_eager: False
-    free_cache_engine: False
 
 critic:
   model:
