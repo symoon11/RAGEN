@@ -169,7 +169,7 @@ class ContextManager:
                 actions = actions[:max_actions] #Only the first MAX_ACTIONS actions are kept in the rollout.
                 action_content = (" " + self.action_sep + " ").join(actions)
 
-            llm_response = f"<think>\n{think_content}\n</think>\n\n<answer>\n{action_content}\n</answer>" if self.config.agent_proxy.enable_think else f"<answer>\n{action_content}\n</answer>"
+            llm_response = response
         return llm_response, actions
         
     def _normalize_score_tensor(self, score_tensor: torch.Tensor, env_outputs: List[Dict]) -> torch.Tensor:

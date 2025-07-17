@@ -2,10 +2,13 @@ defaults:
   - base
 
 model_path: Qwen/Qwen3-0.6B
+tokenizer_path: Qwen/Qwen2.5-0.5B-Instruct
 
 actor_rollout_ref:
   model:
     use_liger: True
+  tokenizer:
+    path: ${tokenizer_path}
   actor:
     fsdp_config:
       model_dtype: bfloat16
