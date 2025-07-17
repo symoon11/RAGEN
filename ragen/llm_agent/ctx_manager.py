@@ -169,7 +169,10 @@ class ContextManager:
                 actions = actions[:max_actions] #Only the first MAX_ACTIONS actions are kept in the rollout.
                 action_content = (" " + self.action_sep + " ").join(actions)
 
-            llm_response = f"<think>{think_content}</think><answer>{action_content}</answer>" if self.config.agent_proxy.enable_think else f"<answer>{action_content}</answer>"
+            llm_response = f"<think>\n{think_content}\n</think>\n\n<answer>{action_content}</answer>" if self.config.agent_proxy.enable_think else f"<answer>\n{action_content}\n</answer>"
+        print(llm_response)
+        print(actions)
+        exit()
         return llm_response, actions
         
     def _normalize_score_tensor(self, score_tensor: torch.Tensor, env_outputs: List[Dict]) -> torch.Tensor:
@@ -253,9 +256,9 @@ class ContextManager:
             for idx, content in enumerate(env_output["history"]):
                 messages[-1]["content"] += f"\nTurn {idx + 1}:\n"
                 if "state" in content:
-                    FORMAT_PROMPT = "<think> [Your thoughts] </think> <answer> [your answer] </answer>" if self.config.agent_proxy.enable_think else "<answer> [your answer] </answer>"
+                    FORMAT_PROMPT = "<think>\n[Your thoughts]\n</think>\n\n<answer>\n[your answer]\n</answer>" if self.config.agent_proxy.enable_think else "<answer>\n[your answer]\n</answer>"
                     LENGTH_PROMPT = f"Max response length: {self.env_config_lookup[env_output['env_id']]['max_tokens']} words (tokens)."
-                    messages[-1]["content"] += f"State:\n{content['state']}\nYou have {content['actions_left']} actions left. Always output: {FORMAT_PROMPT} with no extra text. Strictly follow this format. {LENGTH_PROMPT}\n"
+                    messages[-1]["content"] += f"State:\n{content['state']}\nYou have {content['actions_left']} actions left. Always output:\n{FORMAT_PROMPT}\nwith no extra text. Strictly follow this format. {LENGTH_PROMPT}\n"
                 if "llm_response" in content:
                     messages.append({"role": "assistant", "content": content["llm_response"]})
                 if "reward" in content and not (prepare_for_update and idx == len(env_output["history"]) - 1):
@@ -269,9 +272,9 @@ class ContextManager:
             text = self.tokenizer.apply_chat_template(messages, add_generation_prompt=(not prepare_for_update), tokenize=False)
             if not prepare_for_update:
                 if self.config.agent_proxy.enable_think:
-                    text += "<think>" # force the LLM to think before answering
+                    text += "<think>\n" # force the LLM to think before answering
                 else:
-                    text += "<answer>" # force the LLM to answer
+                    text += "<answer>\n" # force the LLM to answer
             llm_input_texts.append(text)
             messages_list.append(messages)
 
@@ -337,8 +340,7 @@ class ContextManager:
             )
         else: # dataproto has textual responses
             responses = lm_outputs.non_tensor_batch['response_texts']
-        responses = ["<think>" + response if self.config.agent_proxy.enable_think else "<answer>" + response for response in responses] # The LLM generation does not include <think> tags. Add them back here.
-            
+        responses = ["<think>\n" + response if self.config.agent_proxy.enable_think else "<answer>\n" + response for response in responses] # The LLM generation does not include <think> tags. Add them back here.
         env_ids = lm_outputs.non_tensor_batch['env_ids']
         env_inputs = []
         for env_id, response in zip(env_ids, responses):

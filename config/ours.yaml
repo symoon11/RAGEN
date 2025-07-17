@@ -38,4 +38,5 @@ es_manager:
 
 custom_envs:
   FrozenLake:
+    env_instruction: "You are solving the FrozenLake puzzle. Forbid the whole and go to the target. You may move to the unintended direction due to the slippery ice. Example answer format:\n<think>\nTo forbid the hole and go to the target, I should go left then go up.\n</think>\n\n<answer>\nLeft || Up\n</answer>"
     max_tokens: 2048
