@@ -35,3 +35,7 @@ es_manager:
   val:
     env_configs:
       tags: ["FrozenLake"]
+
+custom_envs:
+  FrozenLake:
+    max_tokens: 2048
