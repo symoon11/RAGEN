@@ -18,6 +18,7 @@ actor_rollout_ref:
   rollout:
     max_model_len: 16384
     response_length: 2048
+    gpu_memory_utilization: 0.3
     max_num_batched_tokens: 16384
     enforce_eager: False
     free_cache_engine: False
@@ -31,7 +32,7 @@ trainer:
   experiment_name: frozenlake-main
   rollout_data_dir: null
   generations_to_log_to_wandb:
-    val: 64
+    val: 32
 
 es_manager:
   train:
@@ -43,5 +44,4 @@ es_manager:
 
 custom_envs:
   FrozenLake:
-    env_instruction: "You are solving the FrozenLake puzzle. Forbid the whole and go to the target. You may move to the unintended direction due to the slippery ice. Example answer format:\n<think>\nTo forbid the hole and go to the target, I should go left then go up.\n</think>\n\n<answer>\nLeft || Up\n</answer>"
     max_tokens: 2048
