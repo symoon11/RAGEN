@@ -27,6 +27,8 @@ critic:
 trainer:
   experiment_name: frozenlake-main
   rollout_data_dir: null
+  generations_to_log_to_wandb:
+    val: 64
 
 es_manager:
   train:
