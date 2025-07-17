@@ -169,7 +169,7 @@ class ContextManager:
                 actions = actions[:max_actions] #Only the first MAX_ACTIONS actions are kept in the rollout.
                 action_content = (" " + self.action_sep + " ").join(actions)
 
-            llm_response = f"<think>\n{think_content}\n</think>\n\n<answer>{action_content}</answer>" if self.config.agent_proxy.enable_think else f"<answer>\n{action_content}\n</answer>"
+            llm_response = f"<think>\n{think_content}\n</think>\n\n<answer>\n{action_content}\n</answer>" if self.config.agent_proxy.enable_think else f"<answer>\n{action_content}\n</answer>"
         return llm_response, actions
         
     def _normalize_score_tensor(self, score_tensor: torch.Tensor, env_outputs: List[Dict]) -> torch.Tensor:
@@ -267,11 +267,11 @@ class ContextManager:
             assert all(msg["role"] == "assistant" for msg in messages[2::2])
 
             text = self.tokenizer.apply_chat_template(messages, add_generation_prompt=(not prepare_for_update), tokenize=False)
-            if not prepare_for_update:
-                if self.config.agent_proxy.enable_think:
-                    text += "<think>\n" # force the LLM to think before answering
-                else:
-                    text += "<answer>\n" # force the LLM to answer
+            # if not prepare_for_update:
+            #     if self.config.agent_proxy.enable_think:
+            #         text += "<think>" # force the LLM to think before answering
+            #     else:
+            #         text += "<answer>" # force the LLM to answer
             llm_input_texts.append(text)
             messages_list.append(messages)
 
@@ -337,7 +337,7 @@ class ContextManager:
             )
         else: # dataproto has textual responses
             responses = lm_outputs.non_tensor_batch['response_texts']
-        responses = ["<think>\n" + response if self.config.agent_proxy.enable_think else "<answer>\n" + response for response in responses] # The LLM generation does not include <think> tags. Add them back here.
+        # responses = ["<think>" + response if self.config.agent_proxy.enable_think else "<answer>" + response for response in responses] # The LLM generation does not include <think> tags. Add them back here.
         env_ids = lm_outputs.non_tensor_batch['env_ids']
         env_inputs = []
         for env_id, response in zip(env_ids, responses):

@@ -19,6 +19,7 @@ vllm==0.8.4
 wandb
 gymnasium
 gymnasium[toy-text]
+liger-kernel
 
 pyarrow>=15.0.0
 pylatexenc
