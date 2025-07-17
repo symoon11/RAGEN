@@ -170,9 +170,6 @@ class ContextManager:
                 action_content = (" " + self.action_sep + " ").join(actions)
 
             llm_response = f"<think>\n{think_content}\n</think>\n\n<answer>{action_content}</answer>" if self.config.agent_proxy.enable_think else f"<answer>\n{action_content}\n</answer>"
-        print(llm_response)
-        print(actions)
-        exit()
         return llm_response, actions
         
     def _normalize_score_tensor(self, score_tensor: torch.Tensor, env_outputs: List[Dict]) -> torch.Tensor:
