@@ -170,7 +170,6 @@ class ContextManager:
                 action_content = (" " + self.action_sep + " ").join(actions)
 
             llm_response = f"<think>{think_content}</think><answer>{action_content}</answer>" if self.config.agent_proxy.enable_think else f"<answer>{action_content}</answer>"
-            # llm_response = response
         return llm_response, actions
         
     def _normalize_score_tensor(self, score_tensor: torch.Tensor, env_outputs: List[Dict]) -> torch.Tensor:
@@ -255,10 +254,8 @@ class ContextManager:
                 messages[-1]["content"] += f"\nTurn {idx + 1}:\n"
                 if "state" in content:
                     FORMAT_PROMPT = "<think> [Your thoughts] </think> <answer> [your answer] </answer>" if self.config.agent_proxy.enable_think else "<answer> [your answer] </answer>"
-                    # FORMAT_PROMPT = "<think>\n[Your thoughts]\n</think>\n\n<answer>\n[your answer]\n</answer>" if self.config.agent_proxy.enable_think else "<answer>\n[your answer]\n</answer>"
                     LENGTH_PROMPT = f"Max response length: {self.env_config_lookup[env_output['env_id']]['max_tokens']} words (tokens)."
                     messages[-1]["content"] += f"State:\n{content['state']}\nYou have {content['actions_left']} actions left. Always output: {FORMAT_PROMPT} with no extra text. Strictly follow this format. {LENGTH_PROMPT}\n"
-                    # messages[-1]["content"] += f"State:\n{content['state']}\nYou have {content['actions_left']} actions left. Always output:\n{FORMAT_PROMPT}\nwith no extra text. Strictly follow this format. {LENGTH_PROMPT}\n"
                 if "llm_response" in content:
                     messages.append({"role": "assistant", "content": content["llm_response"]})
                 if "reward" in content and not (prepare_for_update and idx == len(env_output["history"]) - 1):

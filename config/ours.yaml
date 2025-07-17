@@ -24,7 +24,7 @@ actor_rollout_ref:
     tensor_model_parallel_size: ${n_gpus_per_node}
     max_model_len: 16384
     response_length: 2048
-    gpu_memory_utilization: 0.5
+    gpu_memory_utilization: 0.25
     max_num_batched_tokens: 16384
     enforce_eager: False
     free_cache_engine: False
