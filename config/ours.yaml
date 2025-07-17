@@ -1,8 +1,13 @@
 defaults:
   - base
 
+n_gpus_per_node: 1
+CUDA_VISIBLE_DEVICES: "0"
 model_path: Qwen/Qwen3-0.6B
 tokenizer_path: Qwen/Qwen2.5-0.5B-Instruct
+
+system:
+  CUDA_VISIBLE_DEVICES: ${CUDA_VISIBLE_DEVICES}
 
 actor_rollout_ref:
   model:
@@ -16,15 +21,17 @@ actor_rollout_ref:
     fsdp_config:
       model_dtype: bfloat16
   rollout:
+    tensor_model_parallel_size: ${n_gpus_per_node}
     max_model_len: 16384
     response_length: 2048
-    gpu_memory_utilization: 0.3
+    gpu_memory_utilization: 0.5
     max_num_batched_tokens: 16384
     enforce_eager: False
     free_cache_engine: False
 
 critic:
   model:
+    use_liger: True
     fsdp_config:
       model_dtype: bfloat16
 
@@ -33,6 +40,7 @@ trainer:
   rollout_data_dir: null
   generations_to_log_to_wandb:
     val: 32
+  n_gpus_per_node: ${n_gpus_per_node}
 
 es_manager:
   train:
