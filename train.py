@@ -191,7 +191,10 @@ class TaskRunner:
         from pprint import pprint
 
         # download the checkpoint from hdfs
-        local_path = copy_to_local(config.tokenizer_path)
+        if config.tokenizer_path:
+            local_path = copy_to_local(config.tokenizer_path)
+        else:
+            local_path = copy_to_local(config.model_path)
 
         # instantiate tokenizer
         from verl.utils import hf_tokenizer, hf_processor
