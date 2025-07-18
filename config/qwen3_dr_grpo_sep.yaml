@@ -1,0 +1,10 @@
+defaults:
+  - qwen3_dr_grpo
+
+trainer:
+  experiment_name: frozenlake-dr-grpo-sep
+
+custom_envs:
+  FrozenLake:
+    env_config:
+      sep: " "

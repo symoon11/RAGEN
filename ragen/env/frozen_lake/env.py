@@ -14,6 +14,7 @@ class FrozenLakeEnv(BaseDiscreteActionEnv, GymFrozenLakeEnv):
         self.ACTION_LOOKUP = config.action_lookup
         self.ACTION_SPACE = gym.spaces.discrete.Discrete(4, start=1)
         self.render_mode = config.render_mode
+        self.sep = config.sep
         self.action_map = config.action_map
         self.MAP_LOOKUP = config.map_lookup
         random_map = generate_random_map(size=config.size, p=config.p, seed=config.map_seed)
@@ -54,7 +55,7 @@ class FrozenLakeEnv(BaseDiscreteActionEnv, GymFrozenLakeEnv):
             # add player in hole or player on goal
             room[self.player_pos] = 4 if self.desc[self.player_pos] == b'H' else 5 if self.desc[self.player_pos] == b'G' else 0
 
-            return '\n'.join(''.join(self.GRID_LOOKUP.get(cell, "?") for cell in row) for row in room)
+            return '\n'.join(self.sep.join(self.GRID_LOOKUP.get(cell, "?") for cell in row) for row in room)
         elif self.render_mode == 'rgb_array':
             return self._render_gui('rgb_array')
         else:
