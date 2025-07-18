@@ -17,8 +17,4 @@ algorithm:
   norm_adv_by_std_in_grpo: False
 
 trainer:
-  experiment_name: frozenlake-grpo
-
-agent_proxy:
-  reward_normalization:
-    method: mean_std
+  experiment_name: frozenlake-dr-grpo
