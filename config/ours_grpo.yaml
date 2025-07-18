@@ -1,0 +1,16 @@
+defaults:
+  - ours
+
+actor_rollout_ref:
+  actor:
+    use_kl_loss: True
+
+algorithm:
+  adv_estimator: grpo
+
+trainer:
+  experiment_name: frozenlake-ours-grpo
+
+agent_proxy:
+  reward_normalization:
+    method: mean_std

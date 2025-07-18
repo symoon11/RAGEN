@@ -1,0 +1,16 @@
+defaults:
+  - ours
+
+actor_rollout_ref:
+  actor:
+    clip_ratio_high: 0.2
+
+  rollout:
+    rollout_filter_ratio: 1.0
+
+algorithm:
+  kl_ctrl:
+    kl_coef: 0.001
+
+trainer:
+  experiment_name: frozenlake-ours-ppo
