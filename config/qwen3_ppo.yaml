@@ -13,5 +13,4 @@ algorithm:
     kl_coef: 0.001
 
 trainer:
-  project_name: ragen-qwen3
   experiment_name: frozenlake-ppo

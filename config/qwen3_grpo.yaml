@@ -14,7 +14,6 @@ algorithm:
   adv_estimator: grpo
 
 trainer:
-  project_name: ragen-qwen3
   experiment_name: frozenlake-grpo
 
 agent_proxy:
