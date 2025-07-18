@@ -1,5 +1,5 @@
 defaults:
-  - ours
+  - qwen3_base
 
 actor_rollout_ref:
   actor:
@@ -13,4 +13,5 @@ algorithm:
     kl_coef: 0.001
 
 trainer:
-  experiment_name: frozenlake-ours-ppo
+  project_name: ragen-qwen3
+  experiment_name: frozenlake-ppo

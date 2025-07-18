@@ -1,5 +1,5 @@
 defaults:
-  - ours
+  - qwen3_base
 
 actor_rollout_ref:
   actor:
@@ -14,7 +14,8 @@ algorithm:
   adv_estimator: grpo
 
 trainer:
-  experiment_name: frozenlake-ours-grpo
+  project_name: ragen-qwen3
+  experiment_name: frozenlake-grpo
 
 agent_proxy:
   reward_normalization:

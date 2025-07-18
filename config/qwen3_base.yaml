@@ -28,7 +28,8 @@ critic:
       model_dtype: bfloat16
 
 trainer:
-  experiment_name: frozenlake-ours
+  project_name: ragen-qwen3
+  experiment_name: frozenlake-base
   generations_to_log_to_wandb:
     val: 32
 
