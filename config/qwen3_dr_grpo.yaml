@@ -1,0 +1,24 @@
+defaults:
+  - qwen3_base
+
+grpo_advantage_length_weight: False
+
+actor_rollout_ref:
+  actor:
+    use_kl_loss: False
+    clip_ratio_high: 0.2
+    loss_agg_mode: seq-mean-token-sum-norm
+
+  rollout:
+    rollout_filter_ratio: 1.0
+
+algorithm:
+  adv_estimator: grpo
+  norm_adv_by_std_in_grpo: False
+
+trainer:
+  experiment_name: frozenlake-grpo
+
+agent_proxy:
+  reward_normalization:
+    method: mean_std
