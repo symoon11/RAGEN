@@ -1,6 +1,8 @@
 defaults:
   - qwen3_base
 
+grpo_advantage_length_weight: True
+
 actor_rollout_ref:
   actor:
     use_kl_loss: True
